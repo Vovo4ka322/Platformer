@@ -1,17 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerKeyboardController : MonoBehaviour
 {
-
-    public PlayerMovement Player;
+    [SerializeField] private PlayerMovement _player;
 
     private void Start()
     {
-
-        Player = Player == null ? GetComponent<PlayerMovement>() : Player;
-        if (Player == null)
+        _player = _player == null ? GetComponent<PlayerMovement>() : _player;
+        if (_player == null)
         {
             Debug.LogError("Player not set to controller");
         }
@@ -19,21 +15,19 @@ public class PlayerKeyboardController : MonoBehaviour
 
     private void Update()
     {
-
-        if (Player != null)
+        if (_player != null)
         {
-
             if (Input.GetKey(KeyCode.D))
             {
-                Player.Move();
+                _player.Move();
             }
             if (Input.GetKey(KeyCode.A))
             {
-                Player.Move();
+                _player.Move();
             }
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                Player.Jump();
+                _player.Jump();
             }
         }
     }

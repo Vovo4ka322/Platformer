@@ -1,10 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
+    private const string Horizontal = nameof(Horizontal);
+    private const string HorizontalMove = nameof(HorizontalMove);
+    private const string IsJumping = nameof(IsJumping);
+
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _jumpForce;
     [SerializeField] private Animator _animator;
@@ -13,28 +15,22 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask _ground;
     [SerializeField] private float _groundCheckRadius;
 
-    private const string Horizontal = nameof(Horizontal);
-    private const string HorizontalMove = nameof(HorizontalMove);
-    private const string IsJumping = nameof(IsJumping);
-
     private Rigidbody2D _rigidbody2D;
     private Vector2 _position;
     private float _horizontalMove;
     private bool _isGround;
-    private int _jumpCount;
-    private int _maxJumpCount;
+    private int _jumpCount = 0;
+    private int _maxJumpCount = 2;
 
     private void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        _jumpCount = 0;
-        _maxJumpCount = 2;
     }
 
     private void Update()
     {
         Move();
-        Flip();
+        TryFlip();
         Jump();
         PlayAnimation();
     }
@@ -56,13 +52,7 @@ public class PlayerMovement : MonoBehaviour
             _jumpCount = 0;
     }
 
-    private void Flip()
-    {
-        if (_position.x > 0)
-            _spriteRenderer.flipX = false;
-        else if (_position.x < 0)
-            _spriteRenderer.flipX = true;
-    }
+    private void TryFlip() => _spriteRenderer.flipX = (_position.x < 0) == true;
 
     private void PlayAnimation()
     {
