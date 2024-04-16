@@ -7,11 +7,9 @@ public class MedKitSpawner : MonoBehaviour
     [SerializeField] private Transform[] _spawnPoints;
     [SerializeField] private Transform _gameObject;
 
-    private float _appearancetime = float.MaxValue;
-
     private void OnEnable()
     {
-        Invoke(nameof(Spawn), _appearancetime);
+        Spawn();
     }
 
     private void Spawn()
@@ -19,6 +17,5 @@ public class MedKitSpawner : MonoBehaviour
         int index = Random.Range(0, _spawnPoints.Length);
 
         Instantiate(_gameObject, _spawnPoints[index]);
-        Invoke(nameof(Spawn), _appearancetime);
     }
 }
